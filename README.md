@@ -3,9 +3,10 @@
 # 如果本项目，确实帮助到了您👍，烦请点一个Star✨
 
 SSPanel迁移至wyx2685分支的V2board，目前仅在bob分支的SSPanel上测试，不清楚其他分支的SSPanel是否适用(大概率可以)  
->兼容SSPanel的md5登陆密码加密并自动升级password_hash请自行修改V2board  
+>兼容SSPanel的md5登陆密码加密并自动升级password_hash请自行修改V2board
+
 app/Utils/Helper.php
-```
+```php
     public static function multiPasswordVerify($algo, $salt, $password, $hash)
     {
         switch($algo) {
@@ -34,8 +35,9 @@ app/Utils/Helper.php
         }
     }
 ```
+
 app/Http/Controllers/V1/Passport/AuthController.php
-```
+```php
     public function login(AuthLogin $request)
     {
         $email = $request->input('email');
@@ -95,9 +97,11 @@ app/Http/Controllers/V1/Passport/AuthController.php
         ]);
     }
 ```
->兼容SSPanel的/link/{token}订阅链接请自行修改V2board   
+
+>兼容SSPanel的/link/{token}订阅链接请自行修改V2board
+
 app/Utils/Helper.php
-```
+```php
     public static function getSubscribeUrl($token)
     {
         $path = config('v2board.subscribe_path', '/api/v1/client/subscribe');
@@ -117,8 +121,9 @@ app/Utils/Helper.php
         return url($path);
     }
 ```
+
 app/Http/Routes/V1/ClientRoute.php  
-```
+```php
     public function map(Registrar $router)
     {
 
@@ -137,13 +142,15 @@ app/Http/Routes/V1/ClientRoute.php
         });
     }
 ```
+
 sspanel_bought_to_plan_migration.php 通过最后一次购买记录确定套餐信息  
 >需要自行在V2board，创建好套餐和用户组，并替换迁移文件中的套餐映射信息
 
 sspanel_to_v2board_migration.php 用于迁移用户表  
->在迁移前V2board仅存在一个用户即管理员用户  
+>在迁移前V2board仅存在一个用户即管理员用户
+
 流量计算过程：
-```
+```php
 // 1. 确定transfer_enable
         if ($autoResetBandwidth > 0) {
             // auto_reset_bandwidth不为0 -> transfer_enable(十进制GB转二进制字节)
